@@ -70,10 +70,16 @@ class PromptGenerator:
         type_frame = ttk.LabelFrame(left_pane, text="作文类型")
         type_frame.pack(fill=tk.X, pady=5)
         ttk.Radiobutton(
-            type_frame, text="议论文", variable=self.essay_type, value="argumentative"
+            type_frame,
+            text="议论文",
+            variable=self.essay_type,
+            value="argumentative",
         ).pack(side=tk.LEFT)
         ttk.Radiobutton(
-            type_frame, text="读后续写", variable=self.essay_type, value="continuation"
+            type_frame,
+            text="读后续写",
+            variable=self.essay_type,
+            value="continuation",
         ).pack(side=tk.LEFT)
 
         level_frame = ttk.LabelFrame(left_pane, text="润色级别")
@@ -114,9 +120,12 @@ class PromptGenerator:
         self.update_options_visibility()
 
     def update_options_visibility(self):
-        is_argumentative = self.essay_type.get() == "argumentative"
         for var, cb in self.option_checks.items():
-            cb.pack_forget() if var in ["coherence", "vividness", "climax"] else None
+            (
+                cb.pack_forget()
+                if var in ["coherence", "vividness", "climax"]
+                else None
+            )
 
         options_mapping = {
             "argumentative": ["structure", "vocabulary", "grammar"],
@@ -126,11 +135,13 @@ class PromptGenerator:
             self.option_checks[var].pack(anchor=tk.W)
 
     def create_output_section(self):
-        ttk.Button(self.root, text="生成提示词", command=self.generate_prompt).pack(
-            pady=5
-        )
+        ttk.Button(
+            self.root, text="生成提示词", command=self.generate_prompt
+        ).pack(pady=5)
 
-        output_frame = ttk.LabelFrame(self.root, text="生成的提示词", padding=10)
+        output_frame = ttk.LabelFrame(
+            self.root, text="生成的提示词", padding=10
+        )
         output_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
         self.output_text = tk.Text(output_frame, height=15, wrap=tk.WORD)
@@ -138,12 +149,12 @@ class PromptGenerator:
 
         btn_frame = ttk.Frame(self.root)
         btn_frame.pack(pady=5)
-        ttk.Button(btn_frame, text="复制提示词", command=self.copy_to_clipboard).pack(
-            side=tk.LEFT, padx=5
-        )
-        ttk.Button(btn_frame, text="清空内容", command=self.clear_content).pack(
-            side=tk.LEFT
-        )
+        ttk.Button(
+            btn_frame, text="复制提示词", command=self.copy_to_clipboard
+        ).pack(side=tk.LEFT, padx=5)
+        ttk.Button(
+            btn_frame, text="清空内容", command=self.clear_content
+        ).pack(side=tk.LEFT)
 
     def generate_prompt(self):
         if not self.validate_input():
@@ -156,7 +167,9 @@ class PromptGenerator:
             "input_type": next(
                 it for it in InputType if it.value == self.input_type.get()
             ),
-            "options": [k for k, v in self.optimize_options.items() if v.get()],
+            "options": [
+                k for k, v in self.optimize_options.items() if v.get()
+            ],
         }
 
         prompt = PromptBuilder.build_prompt(params)
