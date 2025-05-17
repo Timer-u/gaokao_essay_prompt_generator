@@ -5,4 +5,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     app = PromptGenerator(root)
     root.mainloop()
-    

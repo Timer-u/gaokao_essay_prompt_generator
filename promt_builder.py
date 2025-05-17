@@ -1,5 +1,6 @@
 from enums import InputType
 
+
 class PromptBuilder:
     @staticmethod
     def build_prompt(params):
@@ -41,4 +42,3 @@ class PromptBuilder:
         )
 
         return "\n".join(prompt)
-        

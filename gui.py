@@ -3,6 +3,7 @@ from tkinter import ttk, messagebox
 from enums import InputType
 from prompt_builder import PromptBuilder
 
+
 class PromptGenerator:
     def __init__(self, root):
         self.root = root
@@ -33,7 +34,7 @@ class PromptGenerator:
             "grammar": tk.BooleanVar(value=True),
             "coherence": tk.BooleanVar(),
             "vividness": tk.BooleanVar(),
-            "climax": tk.BooleanVar()
+            "climax": tk.BooleanVar(),
         }
 
     def create_widgets(self):
@@ -182,4 +183,3 @@ class PromptGenerator:
     def clear_content(self):
         self.input_text.delete("1.0", tk.END)
         self.output_text.delete("1.0", tk.END)
-        
