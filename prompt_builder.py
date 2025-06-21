@@ -1,6 +1,21 @@
+"""提示词构建模块"""
+
+
 class PromptBuilder:
+    """构建提示词的静态方法集合"""
+
     @staticmethod
     def build_prompt(params):
+        """根据参数构建提示词
+
+        Args:
+            params (dict): 包含以下键的字典:
+                - content: 用户输入内容
+                - essay_type: 作文类型 (argumentative/continuation)
+                - polish_level: 润色级别 (basic/medium/advanced)
+                - input_type: 输入类型 (InputType 枚举)
+                - options: 选择的优化维度列表
+        """
         # 公共模板
         prompt = [
             "Please act as an expert English writing tutor "

@@ -1,3 +1,5 @@
+"""高考英语作文提示词生成器GUI界面"""
+
 import tkinter as tk
 from tkinter import ttk, messagebox
 from enums import InputType
@@ -5,14 +7,23 @@ from prompt_builder import PromptBuilder
 
 
 class PromptGenerator:
+    """高考英语作文提示词生成器主界面"""
+
     def __init__(self, root):
+        """初始化界面组件和变量"""
         self.root = root
         self.root.title("高考英语作文提示词生成器")
         self.setup_geometry()
-        self.create_widgets()
         self.setup_variables()
+        self.create_widgets()
+
+        # 初始化组件属性
+        self.input_text = None
+        self.output_text = None
+        self.option_checks = {}
 
     def setup_geometry(self):
+        """设置窗口位置和大小"""
         window_width = 1000
         window_height = 700
         screen_width = self.root.winfo_screenwidth()
@@ -24,6 +35,7 @@ class PromptGenerator:
         )
 
     def setup_variables(self):
+        """初始化界面变量"""
         self.essay_type = tk.StringVar(value="argumentative")
         self.polish_level = tk.StringVar(value="medium")
         self.input_type = tk.StringVar(value=InputType.PARAGRAPH.value)
@@ -38,11 +50,13 @@ class PromptGenerator:
         }
 
     def create_widgets(self):
+        """创建界面所有组件"""
         self.create_input_section()
         self.create_config_section()
         self.create_output_section()
 
     def create_input_section(self):
+        """创建输入区域组件"""
         input_frame = ttk.LabelFrame(self.root, text="输入内容", padding=10)
         input_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
@@ -61,6 +75,7 @@ class PromptGenerator:
         self.input_text.pack(fill=tk.BOTH, expand=True)
 
     def create_config_section(self):
+        """创建配置区域组件"""
         config_frame = ttk.Frame(self.root)
         config_frame.pack(fill=tk.X, padx=10, pady=5)
 
@@ -106,7 +121,6 @@ class PromptGenerator:
             ],
         }
 
-        self.option_checks = {}
         for text, var in options_mapping["argumentative"]:
             cb = ttk.Checkbutton(
                 right_pane,
@@ -120,13 +134,13 @@ class PromptGenerator:
         self.update_options_visibility()
 
     def update_options_visibility(self):
-        for var, cb in self.option_checks.items():
-            (
-                cb.pack_forget()
-                if var in ["coherence", "vividness", "climax"]
-                else None
-            )
+        """根据作文类型更新优化选项的可见性"""
+        # 先隐藏所有续写选项
+        for var in ["coherence", "vividness", "climax"]:
+            if var in self.option_checks:
+                self.option_checks[var].pack_forget()
 
+        # 显示当前作文类型对应的选项
         options_mapping = {
             "argumentative": ["structure", "vocabulary", "grammar"],
             "continuation": ["coherence", "vividness", "climax"],
@@ -135,6 +149,7 @@ class PromptGenerator:
             self.option_checks[var].pack(anchor=tk.W)
 
     def create_output_section(self):
+        """创建输出区域组件"""
         ttk.Button(
             self.root, text="生成提示词", command=self.generate_prompt
         ).pack(pady=5)
@@ -157,6 +172,7 @@ class PromptGenerator:
         ).pack(side=tk.LEFT)
 
     def generate_prompt(self):
+        """生成提示词并显示在输出区域"""
         if not self.validate_input():
             return
 
@@ -177,6 +193,7 @@ class PromptGenerator:
         self.output_text.insert("1.0", prompt)
 
     def validate_input(self):
+        """验证输入内容是否有效"""
         content = self.input_text.get("1.0", tk.END).strip()
         if not content:
             messagebox.showwarning("警告", "请输入要润色的内容！")
@@ -187,6 +204,7 @@ class PromptGenerator:
         return True
 
     def copy_to_clipboard(self):
+        """复制生成的提示词到剪贴板"""
         prompt = self.output_text.get("1.0", tk.END).strip()
         if prompt:
             self.root.clipboard_clear()
@@ -194,5 +212,6 @@ class PromptGenerator:
             messagebox.showinfo("成功", "提示词已复制到剪贴板！")
 
     def clear_content(self):
+        """清空输入和输出区域"""
         self.input_text.delete("1.0", tk.END)
         self.output_text.delete("1.0", tk.END)

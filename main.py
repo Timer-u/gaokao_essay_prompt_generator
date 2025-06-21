@@ -1,3 +1,5 @@
+"""高考英语作文提示词生成器主入口"""
+
 import tkinter as tk
 from gui import PromptGenerator
 
